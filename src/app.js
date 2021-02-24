@@ -20,7 +20,3 @@ const jsx = (
 
 ReactDOM.render(jsx, document.getElementById('app'));
 
-// addExpense water bill
-// addExpenses gas bill
-// text filter bill 2 water 1
-// get visible expenses
