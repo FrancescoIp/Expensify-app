@@ -13,11 +13,11 @@ exports[`should render an expense with givend data 1`] = `
     </Link>
     <p>
       Amount: 
-      1095
+      $1,095.00
     </p>
     <p>
       Created At: 
-      -345600000
+      December 28th, 1969
     </p>
   </li>
 </div>
