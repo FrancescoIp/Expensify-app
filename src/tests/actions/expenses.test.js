@@ -3,8 +3,6 @@ import thunk from 'redux-thunk';
 import { startAddExpense, addExpense, editExpense, removeExpense } from '../../actions/expenses';
 import expenses from '../fixture/expenses';
 import database from '../../firebase/firebase';
-import { toMomentObject } from 'react-dates';
-
 // beforeAll(() => {
 //   jasmine.DEFAULT_TIMEOUT_INTERVAL= 10000;
 // });
@@ -37,26 +35,26 @@ test('should setup add expense action object with provided values', () => {
   });
 });
 
-test('should add expense to database and store', async () => {
-  const store = createMockStore({});
+test('should add expense to database and store', (done) => {
   const expenseData = {
     description: 'Mouse',
     amount: 3000,
     note: 'This one is better',
     createdAt: 1000
   };
+  const store = createMockStore()
+  store.dispatch(startAddExpense(expenseData))
 
-  const response = await store.dispatch(startAddExpense(expenseData))
-  console.log(response)
-  //   const actions = store.getActions();
-  //   expect(actions[0]).toEqual({
-  //     type: 'ADD_EXPENSE',
-  //     expense: {
-  //       id: expect.any(String),
-  //       ...expenseData
-  //     }
-  //   });
-
+  const actions = store.getActions();
+  expect(actions[0]).toEqual({
+    type: 'ADD_EXPENSE',
+    expense: {
+      id: expect.any(String),
+      ...expenseData
+    }
+  });
+  
+  done()
   //   return database.ref(`expenses/${actions[0].expense.id}`).once('value');
   // }).then((snapshot) => {
   //   expect(snapshot.val()).toEqual(expenseData);

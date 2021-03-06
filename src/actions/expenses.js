@@ -29,13 +29,14 @@ export const startAddExpense = (expenseData = {}) => {
       createdAt = 0
     } = expenseData;
     const expense = { description, note, amount, createdAt }
+    // it seems that firebase can't handle this asynchronous code, so changing to sync code
+    const ref = database.ref('expenses').push(expense)
+    dispatch(addExpense({
+      id: ref.key,
+      ...expense
+    }))
     
-    return database.ref('expenses').push(expense).then((ref) => {
-      dispatch(addExpense({
-        id: ref.key,
-        ...expense
-      }))
-    });
+    return ref
   };
 };
 
