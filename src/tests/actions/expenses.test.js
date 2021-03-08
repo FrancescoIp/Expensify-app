@@ -3,20 +3,23 @@ import thunk from 'redux-thunk';
 import { startAddExpense, addExpense, editExpense, removeExpense } from '../../actions/expenses';
 import expenses from '../fixture/expenses';
 
+const mockExpense = {
+  key: 'test-id',
+  description: 'test-description',
+  note: 'test-note',
+  amount: 1,
+  createdAt: 'test-date'
+}
+
 const createMockStore = configureMockStore([thunk]);
 jest.mock('../../firebase/firebase', () => ({
   ref: () => {
     return {
-      push: () => ({
-        key: 'test-id',
-        description: 'test-description',
-        note: 'test-note',
-        amount: 1,
-        createdAt: 'test-date'
-      }),
+      push: () => mockExpense,
       on: (string, callback) => {
         callback()
-      }
+      },
+      once: (event) => Promise.resolve({val: mockExpense})
     }
   }
 }))
