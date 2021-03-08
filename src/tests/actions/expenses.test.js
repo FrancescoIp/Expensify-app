@@ -16,7 +16,7 @@ jest.mock('../../firebase/firebase', () => ({
   ref: () => ({
       push: () => mockExpense,
       on: (string, callback) => {
-        callback()
+        callback(mockExpense)
       },
       once: (event) => Promise.resolve({val: mockExpense})
   })
