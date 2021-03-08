@@ -13,15 +13,13 @@ const mockExpense = {
 
 const createMockStore = configureMockStore([thunk]);
 jest.mock('../../firebase/firebase', () => ({
-  ref: () => {
-    return {
+  ref: () => ({
       push: () => mockExpense,
       on: (string, callback) => {
         callback()
       },
       once: (event) => Promise.resolve({val: mockExpense})
-    }
-  }
+  })
 }))
 
 test('should setup remove expense action object', () => {
