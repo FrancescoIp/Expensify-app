@@ -2,11 +2,24 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { startAddExpense, addExpense, editExpense, removeExpense } from '../../actions/expenses';
 import expenses from '../fixture/expenses';
-import database from '../../firebase/firebase';
-// beforeAll(() => {
-//   jasmine.DEFAULT_TIMEOUT_INTERVAL= 10000;
-// });
+
 const createMockStore = configureMockStore([thunk]);
+jest.mock('../../firebase/firebase', () => ({
+  ref: () => {
+    return {
+      push: () => ({
+        key: 'test-id',
+        description: 'test-description',
+        note: 'test-note',
+        amount: 1,
+        createdAt: 'test-date'
+      }),
+      on: (string, callback) => {
+        callback()
+      }
+    }
+  }
+}))
 
 test('should setup remove expense action object', () => {
   const action = removeExpense({ id: '123abc' });
@@ -55,11 +68,6 @@ test('should add expense to database and store', (done) => {
   });
   
   done()
-  //   return database.ref(`expenses/${actions[0].expense.id}`).once('value');
-  // }).then((snapshot) => {
-  //   expect(snapshot.val()).toEqual(expenseData);
-  //   done();
-  // });
 });
 
 // test('should add expense with defaults to database and store', (done) => {
