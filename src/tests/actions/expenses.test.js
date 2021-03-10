@@ -12,7 +12,7 @@ const mockExpense = {
   createdAt: 'test-date'
 }
 
-const createMockStore = configureMockStore([thunk]);
+const createMockStore = configureMockStore([thunk])
 
 jest.mock('../../firebase/firebase', () => (
   {
