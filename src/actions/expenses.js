@@ -30,12 +30,12 @@ export const startAddExpense = (expenseData = {}) => {
     } = expenseData;
     const expense = { description, note, amount, createdAt }
     // it seems that firebase can't handle this asynchronous code, so changing to sync code
-    const ref = database.ref('expenses').push(expense)
+    const ref = database.ref('expenses').push(expense);
     dispatch(addExpense({
       id: ref.key,
       ...expense
     }))
-    
+
     return ref
   };
 };
@@ -52,3 +52,31 @@ export const editExpense = (id, updates) => ({
   id,
   updates
 });
+
+// SET_EXPENSES
+export const setExpenses = (expenses) => ({
+  type: 'SET_EXPENSES',
+  expenses
+})
+
+
+export const startSetExpenses = () => {
+  return (dispatch) => {
+    //1. fetch all expenses
+    return database.ref('expenses').once('value').then((snapshot) => {
+      //2. Parse expenses into an array
+      const expenses = [];
+
+      snapshot.forEach((childSnapshot) => {
+        expenses.push({
+          id: childSnapshot.key,
+          ...childSnapshot.val()
+        });
+      });
+      //3. dispatch setExpenses with that array
+      dispatch(setExpenses(expenses));
+    });
+  };
+};
+
+

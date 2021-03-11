@@ -33,7 +33,7 @@ export { firebase, database as default };
 // database.ref('expenses').on('child_added', (snapshot) => {
 //   console.log(snapshot.key, snapshot.val())
 // });
-
+//-----------------------------------------------
 // database.ref('expenses')
 //  .once('value')
 //  .then((snapshot) => {
