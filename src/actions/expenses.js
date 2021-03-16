@@ -21,7 +21,8 @@ export const addExpense = (expense) => ({
 });
 
 export const startAddExpense = (expenseData = {}) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     const {
       description = '',
       note = '',
@@ -30,7 +31,7 @@ export const startAddExpense = (expenseData = {}) => {
     } = expenseData;
     const expense = { description, note, amount, createdAt }
     // it seems that firebase can't handle this asynchronous code, so changing to sync code
-    const ref = database.ref('expenses').push(expense);
+    const ref = database.ref(`users/${uid}/expenses`).push(expense);
     dispatch(addExpense({
       id: ref.key,
       ...expense
@@ -47,8 +48,9 @@ export const removeExpense = ({ id } = {}) => ({
 });
 
 export const startRemoveExpense = ({ id } = {}) => {
-  return (dispatch) => {
-    return database.ref(`expenses/${id}`).remove().then(() => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid
+    return database.ref(`users/${uid}/expenses/${id}`).remove().then(() => {
       dispatch(removeExpense({ id }))
     });
   };
@@ -62,11 +64,12 @@ export const editExpense = (id, updates) => ({
 });
 
 
-export const startEditExpense = ( id, updates = {}) => {
-  return (dispatch) => {
-     return database.ref(`expenses/${id}`).update(updates).then(() => {
-       dispatch(editExpense(id, updates))
-     });
+export const startEditExpense = (id, updates = {}) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid
+    return database.ref(`users/${uid}/expenses/${id}`).update(updates).then(() => {
+      dispatch(editExpense(id, updates))
+    });
   };
 };
 
@@ -78,9 +81,10 @@ export const setExpenses = (expenses) => ({
 
 
 export const startSetExpenses = () => {
-  return (dispatch) => {
-    //1. fetch all expenses
-    return database.ref('expenses').once('value').then((snapshot) => {
+  return (dispatch, getState) => {
+    //1. fetch all expenses of the logged user
+    const uid = getState().auth.uid
+    return database.ref(`users/${uid}/expenses`).once('value').then((snapshot) => {
       //2. Parse expenses into an array
       const expenses = [];
 
