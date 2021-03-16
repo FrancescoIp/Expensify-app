@@ -4,7 +4,7 @@ import createHistory from 'history/createBrowserHistory';
 import ExpensDashbordPage from '../components/ExpenseDashbordPage';
 import AddExpensePage from '../components/AddExpensePage';
 import EditExpensePage from '../components/EditExpensePage';
-import HelpPage from '../components/Help';
+import HelpPage from '../components/HelpPage';
 import NotFoundPage from '../components/not-found';
 import LoginPage from '../components/LoginPage';
 import Header from '../components/Header';
