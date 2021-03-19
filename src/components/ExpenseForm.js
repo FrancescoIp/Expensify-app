@@ -4,7 +4,7 @@ import { SingleDatePicker } from 'react-dates';
 
 
 export default class ExpenseForm extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       description: props.expense ? props.expense.description : '',
@@ -15,7 +15,7 @@ export default class ExpenseForm extends React.Component {
       error: ''
     };
   }
-  
+
   onDescriptionChange = (e) => {
     const description = e.target.value;
     this.setState(() => ({ description }))
@@ -32,18 +32,18 @@ export default class ExpenseForm extends React.Component {
     }
   };
   onDateChange = (createdAt) => {
-   if(createdAt){
-    this.setState(() => ({ createdAt }))
-   }
+    if (createdAt) {
+      this.setState(() => ({ createdAt }))
+    }
   };
   onFocusChange = ({ focused }) => {
     this.setState(() => ({ calendarFocused: focused }))
   };
   onSubmit = (e) => {
     e.preventDefault();
-    if(!this.state.description || !this.state.amount){
+    if (!this.state.description || !this.state.amount) {
       this.setState(() => ({ error: 'You need to enter a proper description and amount' }))
-    }else {
+    } else {
       this.setState(() => ({ error: '' }))
       this.props.onSubmit({
         description: this.state.description,
@@ -57,39 +57,42 @@ export default class ExpenseForm extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.state.error && <p>{this.state.error}</p>}
-        <form onSubmit={this.onSubmit}>
-          <input
-            type="text"
-            placeholder="Description"
-            autoFocus
-            value={this.state.description}
-            onChange={this.onDescriptionChange}
-          />
-          <input
-            type="text"
-            placeholder="Amount"
-            value={this.state.amount}
-            onChange={this.onAmountChange}
-          />
-          <SingleDatePicker
-            //queste 4 props devono essere definite perforza, nel modo descritto dall API su github 
-            date={this.state.createdAt}
-            onDateChange={this.onDateChange}
-            focused={this.state.calendarFocused}
-            onFocusChange={this.onFocusChange}
-            numberOfMonths={1}
-            isOutsideRange={() => {false}} //con qusta props possiamo specificare quali giorni lasciare fuori dalla scelta possibile. Visto che a noi servono tutti, con "false" ci assicuriamo che siano tutti compresi
-          />
-          <textarea
-            placeholder="Add a note for the expense"
-            value={this.state.note}
-            onChange={this.onNoteChange}
-          />
-          <button>Add Expense</button>
-        </form>
-      </div>
+      <form className="form" onSubmit={this.onSubmit}>
+        {this.state.error && <p className="form__error">{this.state.error}</p>}
+        <input
+          type="text"
+          placeholder="Description"
+          autoFocus
+          className="text-input"
+          value={this.state.description}
+          onChange={this.onDescriptionChange}
+        />
+        <input
+          type="text"
+          placeholder="Amount"
+          className="text-input"
+          value={this.state.amount}
+          onChange={this.onAmountChange}
+        />
+        <SingleDatePicker
+          //queste 4 props devono essere definite perforza, nel modo descritto dall API su github 
+          date={this.state.createdAt}
+          onDateChange={this.onDateChange}
+          focused={this.state.calendarFocused}
+          onFocusChange={this.onFocusChange}
+          numberOfMonths={1}
+          isOutsideRange={() => { false }} //con qusta props possiamo specificare quali giorni lasciare fuori dalla scelta possibile. Visto che a noi servono tutti, con "false" ci assicuriamo che siano tutti compresi
+        />
+        <textarea
+          placeholder="Add a note for the expense"
+          className="text-area"
+          value={this.state.note}
+          onChange={this.onNoteChange}
+        />
+        <div>
+          <button className="button">Save Expense</button>
+        </div>
+      </form>
     )
   }
 };
